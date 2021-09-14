@@ -4,6 +4,7 @@ using namespace std;
 
 int n = 1;
 double a, b;
+
 void keyboard (unsigned char key, int x, int y)
 {
     if (key == '\033')
@@ -222,7 +223,7 @@ void display()
     
     printf("%lf\n", t);
 
-    if (n <= NUMBER_OF_STEPS)
+    if (n < 7)// otherwise screen goes black of that many grid lines
     draw_grid(scale);
 
     glColor3f(1.0, 0.0, 0.0);
@@ -243,12 +244,6 @@ int plotWindowInit (int argc, char* argv[])
     glutInitDisplayMode(GLUT_SINGLE);
     glutInitWindowSize(WIDTH, HEIGHT);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("Symbol");
-    
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-WIDTH, WIDTH, HEIGHT, -HEIGHT, -1.0, 1.0);
-    glTranslatef(-WIDTH, -HEIGHT, 0);
     
     return 0;
 }
@@ -257,6 +252,13 @@ int plotWindowOpen(double param_a, double param_b)
 {
     a = param_a;
     b = param_b;
+
+    glutCreateWindow("Symbol");
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-WIDTH, WIDTH, HEIGHT, -HEIGHT, -1.0, 1.0);
+    glTranslatef(-WIDTH, -HEIGHT, 0);
+
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(skeyboard);

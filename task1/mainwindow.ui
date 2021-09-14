@@ -69,7 +69,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="plainText">
-     <string>1</string>
+     <string>0.2</string>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="aParamEdit">
@@ -82,7 +82,7 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="plainText">
-     <string>1</string>
+     <string>0</string>
     </property>
    </widget>
    <widget class="QTextBrowser" name="textBrowser_2">

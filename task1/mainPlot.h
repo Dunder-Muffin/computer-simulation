@@ -7,18 +7,18 @@
 #include <vector>
 #include <iostream>
 #include <GL/glut.h>
-
+//TODO: make const int instead or even enum to all constants
 #define WIDTH 1200
 #define HEIGHT 800
-const int NUMBER_OF_STEPS = 7;
-const double   A =-1.5;             //TODO: make const int instead of define or even enum
-const double  B =1.5;
-const double  C =-1;
-const double  D =1;
+const int NUMBER_OF_STEPS = 10; /*maximum number of approximation steps*/
+const double   A =-2;   /*size of the grid*/
+const double  B =2;
+const double  C =-2;
+const double  D =2;
 
-#define K 1000 //number of points in one cell
+#define K 100 //number of points in one cell
 
-#define CELLS 2
+#define CELLS 2 /*defindes split of each side of cells*/
 
 #define DELTA 0.25 //size of cell
 
