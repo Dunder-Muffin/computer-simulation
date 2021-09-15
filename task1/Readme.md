@@ -1,2 +1,2 @@
 Dependencies
-sudo apt install freeglut-dev
+  sudo apt install freeglut-dev
