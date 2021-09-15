@@ -117,32 +117,36 @@ void make_graph(vector<vector<int> > &graph, vector<vector<int> >& i_graph, int 
 
     for (int i = 0; i < number_of_cells; i++)
     {
-        double x1, y1;
+        double x1, y1, x, y;
         interval(i, x1, y1, cols, delta);
         //cout << i << endl;
         //cout << "x1 = "<< x1 << " y1 = "<< y1;
         for (int k = 1; k <= K; k++)
         {
-
-            double x = x1 + (double)k * delta/ (double)K;
-            double y = y1 - (double)k * delta/ (double)K;
-
-            henon(x, y);
-            
-            if (x <= A || x >= B || y <= C || y >= D)
-                continue;
-
-            int cell = return_cell(x , y, cols, delta);
-            /*
-            cout << cell << " ";
-            */
-            if (find(graph[i].begin(), graph[i].end(), cell) == graph[i].end())
+            for (int k1 = 1; k1 <= K; k1++)
             {
-                graph[i].push_back(cell);
-                i_graph[cell].push_back(i);
+                /*spawning dots inside of every cell
+                 using such rule to left no cells ucovered
+                 lose minimum of information    */
+                x = x1 + k * delta/ (double)K*2 - k1 * delta/ (double)K;
+                y = y1 + k * delta/ (double)K - k1 * delta/ (double)K*3;
+
+                henon(x, y);
+
+                if (x <= A || x >= B || y <= C || y >= D)
+                    continue;
+
+                int cell = return_cell(x , y, cols, delta);
+                /*
+                cout << cell << " ";
+                */
+                if (find(graph[i].begin(), graph[i].end(), cell) == graph[i].end())
+                {
+                    graph[i].push_back(cell);
+                    i_graph[cell].push_back(i);
+                }
             }
         }
-
         //cout << endl;
     }
 
@@ -170,7 +174,7 @@ vector<vector<int> > approximation (int &scale, int &cols)
 
 void draw_square (int cell, int scale,int cols)
 {
-    glColor3f(0.0, 0.0, 1.0);
+    glColor3f(0.,0.,1.);
     int row = cell / cols;
     int col = cell % cols;
     glRectf(col * scale, row * scale, (col + 1) * scale, (row + 1) * scale);
@@ -215,9 +219,6 @@ void display()
             draw_square(v, scale, cols);
         }
     
-
-    glColor3f(0.0, 1.0, 0.0);
-
     gettimeofday(&t2, NULL);
     double t = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec) / 1000000;
     

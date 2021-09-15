@@ -8,15 +8,14 @@
 #include <iostream>
 #include <GL/glut.h>
 //TODO: make const int instead or even enum to all constants
-#define WIDTH 1200
-#define HEIGHT 800
-const int NUMBER_OF_STEPS = 10; /*maximum number of approximation steps*/
+const int NUMBER_OF_STEPS = 25; /*maximum number of approximation steps*/
 const double   A =-2;   /*size of the grid*/
 const double  B =2;
 const double  C =-2;
 const double  D =2;
-
-#define K 100 //number of points in one cell
+const int WIDTH = 300*abs(A)*abs(B); /*bind size of the window to the size of the grid (optional)*/
+const int HEIGHT = 300*abs(D)*abs(C);
+#define K 10 //N*N defines number of points in one cell
 
 #define CELLS 2 /*defindes split of each side of cells*/
 
