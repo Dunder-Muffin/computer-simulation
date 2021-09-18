@@ -60,7 +60,7 @@ vector <int> get_new_cells_from_old (int cell, int cols)
 
     //int row = cell / cols;
     //int col = cell % cols;
-    int cols_old=cols*CELLS;
+    int cols_old=cols/CELLS;
     int row_old = cell / cols_old;
     int col_old = cell % cols_old;
 
@@ -94,10 +94,10 @@ void dfs2 (int v, vector<vector<int> > &gr, vector<int> &component) {
             dfs2 (gr[v][i], gr, component);
 }
 
-
-vector<vector<int> > find_components (vector <vector<int> > &grid, vector<vector<int> > &gr, int number_of_cells)
+vector<vector<int> > components;
+void find_components (vector <vector<int> > &grid, vector<vector<int> > &gr, int number_of_cells)
 {
-    vector<vector<int> > components;
+    components.clear();
     vector<int> component;
     used.resize(number_of_cells);
     used.assign(number_of_cells, false);
@@ -114,17 +114,17 @@ vector<vector<int> > find_components (vector <vector<int> > &grid, vector<vector
             if ((int)component.size() > 1)
             {
                 components.push_back(component);
+               // for(int it:gr[v])
+                //if (find(vertices_to_iterate.begin(), vertices_to_iterate.end(), it) == vertices_to_iterate.end())
+                //    vertices_to_iterate.push_back(it);
             }
             component.clear();
         }
     }
 
     order.clear();
-    return components;
 }
 
-vector <int> vertices_to_iterate;
-vector <int> vertices_to_iterate_swp;
 void make_graph(vector<vector<int> > &graph, vector<vector<int> >& i_graph, int number_of_cells, double delta)
 {
     int cols = (B - A) / delta;
@@ -154,20 +154,20 @@ if (n==1)
 
                 if (find(graph[i].begin(), graph[i].end(), cell) == graph[i].end())
                 {
-                    /*TODO: find out why these two push_backs consume 66% time*/
+
                     graph[i].push_back(cell);
                     i_graph[cell].push_back(i);
-                    if (find(vertices_to_iterate.begin(), vertices_to_iterate.end(), i) == vertices_to_iterate.end())
-                        vertices_to_iterate.push_back(i);
+
                 }
         }
     }else
     {
 
-        for (int i_old : vertices_to_iterate)
+    for (vector<int> component : components)
+        for (int i_old: component)
         {
-            //cout<<"i= "<<i_old<<endl;
-           //vector<int >new_cells= get_new_cells_from_old (i_old,cols);
+
+           vector<int >new_cells= get_new_cells_from_old (i_old,cols);
            for (int i : get_new_cells_from_old (i_old,cols))
            {
 
@@ -185,24 +185,24 @@ if (n==1)
                         y = y1 + k * lambda - k * lambda*3;
 
                         mapping(x, y);
-                        cout<<x<<y<<endl;
+
                         if (x <= A || x >= B || y <= C || y >= D)
                             continue;
 
                         int cell = return_cell(x , y, cols, delta);
+
                         if (find(graph[i].begin(), graph[i].end(), cell) == graph[i].end())
                         {
                             graph[i].push_back(cell);
                             i_graph[cell].push_back(i);
-                           if (find(vertices_to_iterate_swp.begin(), vertices_to_iterate_swp.end(), i) == vertices_to_iterate_swp.end())
-                                vertices_to_iterate_swp.push_back(i);
+
                         }
                 }
         }
     }}
 }
 
-vector<vector<int> > approximation (int &scale, int &cols)
+void approximation (int &scale, int &cols)
 {
     double delta = DELTA;
 
@@ -218,9 +218,7 @@ vector<vector<int> > approximation (int &scale, int &cols)
     vector <vector <int> > i_graph (number_of_cells);
 
     make_graph(graph, i_graph, number_of_cells, delta);
-    //vertices_to_iterate=vertices_to_iterate_swp;
-    //vertices_to_iterate_swp.clear();
-    return find_components(graph, i_graph, number_of_cells);
+    find_components(graph, i_graph, number_of_cells);
 }
 
 void draw_square (int cell, int scale,int cols)
@@ -235,7 +233,6 @@ void draw_grid(int scale)
 {
     glColor3f(0.0, 0.0, 0.0);
     glBegin(GL_LINES);
-    
 
     for (int i = 0; i < HEIGHT * 2; i+= scale)
     {
@@ -258,21 +255,20 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT);
 
     //draw_grid();
-    
+
     struct timeval t1, t2;
-    
+
 
     int scale, cols;
 
     gettimeofday(&t1, NULL);
-        vector<vector<int> > components = approximation(scale, cols);
+        approximation(scale, cols);
     gettimeofday(&t2, NULL);
     for (vector<int> component : components)
         for (int v: component)
         {
             draw_square(v, scale, cols);
         }
-    
 
     double t = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec) / 1000000;
 /*    we can use here cols*cols due to square grid*/
