@@ -54,27 +54,7 @@ void interval (int cell, double& x1, double& y1, int cols, double delta)
     y1 = D - row * delta;
 }
 
-vector <int> get_new_cells_from_old (int cell, int cols)
-{
-    vector <int> new_cells;
 
-    //int row = cell / cols;
-    //int col = cell % cols;
-    int cols_old=cols*CELLS;
-    int row_old = cell / cols_old;
-    int col_old = cell % cols_old;
-
-    row_old*=CELLS;
-    col_old*=CELLS;
-
-    int elem_0 = row_old*cols + col_old;
-
-    new_cells.push_back(elem_0);
-    new_cells.push_back(elem_0+1);
-    new_cells.push_back(elem_0+cols);
-    new_cells.push_back(elem_0+cols+1);
-    return new_cells;
-}
 std::vector<bool> used;
 std::vector<int> order;
 
@@ -118,22 +98,30 @@ vector<vector<int> > find_components (vector <vector<int> > &grid, vector<vector
             component.clear();
         }
     }
-
+/*
+    for (vector<int>comp : components)
+    {
+        for (int i : comp)
+        {
+            cout << i << " ";
+        }
+        cout << endl;
+    }*/
     order.clear();
     return components;
 }
 
-vector <int> vertices_to_iterate;
-vector <int> vertices_to_iterate_swp;
 void make_graph(vector<vector<int> > &graph, vector<vector<int> >& i_graph, int number_of_cells, double delta)
 {
     int cols = (B - A) / delta;
     double lambda =delta/ (double)K;
-if (n==1)
+
     for (int i = 0; i < number_of_cells; i++)
     {
         double x1, y1, x, y;
         interval(i, x1, y1, cols, delta);
+        //cout << i << endl;
+        //cout << "x1 = "<< x1 << " y1 = "<< y1;
 
         for (int k = 1; k <= K; k++)
         {
@@ -157,49 +145,14 @@ if (n==1)
                     /*TODO: find out why these two push_backs consume 66% time*/
                     graph[i].push_back(cell);
                     i_graph[cell].push_back(i);
-                    if (find(vertices_to_iterate.begin(), vertices_to_iterate.end(), i) == vertices_to_iterate.end())
-                        vertices_to_iterate.push_back(i);
+
                 }
+
         }
-    }else
-    {
 
-        for (int i_old : vertices_to_iterate)
-        {
-            //cout<<"i= "<<i_old<<endl;
-           //vector<int >new_cells= get_new_cells_from_old (i_old,cols);
-           for (int i : get_new_cells_from_old (i_old,cols))
-           {
+        //cout << endl;
+    }
 
-                double x1, y1, x, y;
-                interval(i, x1, y1, cols, delta);
-
-                for (int k = 1; k <= K; k++)
-                {
-                    //for (int k1 = 1; k1 <= K; k1++)
-
-                        /*spawning dots inside of every cell
-                         using such rule to left no cells ucovered
-                         lose minimum of information    */
-                        x = x1 + k * lambda*2 - k * lambda;
-                        y = y1 + k * lambda - k * lambda*3;
-
-                        mapping(x, y);
-                        cout<<x<<y<<endl;
-                        if (x <= A || x >= B || y <= C || y >= D)
-                            continue;
-
-                        int cell = return_cell(x , y, cols, delta);
-                        if (find(graph[i].begin(), graph[i].end(), cell) == graph[i].end())
-                        {
-                            graph[i].push_back(cell);
-                            i_graph[cell].push_back(i);
-                           if (find(vertices_to_iterate_swp.begin(), vertices_to_iterate_swp.end(), i) == vertices_to_iterate_swp.end())
-                                vertices_to_iterate_swp.push_back(i);
-                        }
-                }
-        }
-    }}
 }
 
 vector<vector<int> > approximation (int &scale, int &cols)
@@ -208,18 +161,17 @@ vector<vector<int> > approximation (int &scale, int &cols)
 
     for (int i = 1; i < n; i++)
         delta /= CELLS;
-
+    
     int rows = (D - C) / delta;
     cols = (B - A) / delta;
     int number_of_cells = rows * cols;
-
+    
     scale = WIDTH* 2 / cols;
     vector <vector <int> > graph (number_of_cells);
     vector <vector <int> > i_graph (number_of_cells);
 
     make_graph(graph, i_graph, number_of_cells, delta);
-    //vertices_to_iterate=vertices_to_iterate_swp;
-    //vertices_to_iterate_swp.clear();
+
     return find_components(graph, i_graph, number_of_cells);
 }
 
@@ -265,7 +217,7 @@ void display()
     int scale, cols;
 
     gettimeofday(&t1, NULL);
-        vector<vector<int> > components = approximation(scale, cols);
+    vector<vector<int> > components = approximation(scale, cols);
     gettimeofday(&t2, NULL);
     for (vector<int> component : components)
         for (int v: component)

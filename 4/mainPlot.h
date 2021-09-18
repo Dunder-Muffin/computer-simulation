@@ -16,7 +16,7 @@ const double  C =-2;
 const double  D =2;
 const int WIDTH = 300*abs(A)*abs(B); /*bind size of the window to the size of the grid (optional)*/
 const int HEIGHT = 300*abs(D)*abs(C);
-#define K 100 //N*N defines number of points in one cell
+#define K 10 //N*N defines number of points in one cell
 
 #define CELLS 2 /*defindes split of each side of cells*/
 
@@ -34,7 +34,7 @@ void henon (double &xn, double &yn);
 
 
 int return_cell (double x, double y, int cols,  double delta);
-std::vector <int> get_new_cells_from_old (int cell, int cols);
+
 void interval (int cell, double& x1, double& y1, int cols, double delta);
 
 void dfs1 (int v, std::vector<std::vector<int>> &grid);
