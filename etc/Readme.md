@@ -1,8 +1,8 @@
-# Direcrories:
+## Direcrories:
 
 media: "Readme.md" pics and vids
 
-# Programs:
+## Programs:
 
 1. simple henon mapping visualization
 	*f(x,y) = (1 - ax^2 + y,bx)*
@@ -18,9 +18,9 @@ media: "Readme.md" pics and vids
 
 Derived program from previous two.
 
-## Run
-`make $program number`
-`./run$program number.out`
+# Run
+`make $programNumber`
+`./run$programNumber.out`
 	Example 
 `make 1`
 `./run1.out`
