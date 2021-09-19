@@ -20,6 +20,7 @@ struct Point
 {
     double x,y;
 bool operator==(const Point& rhs){ return this->x==rhs.x&&this->y==rhs.y; }
+Point operator-(){ this->x= -this->x; this->y=-this->y; return *this;}
 };
 
 double dist(Point dot1, Point dot2);
@@ -39,6 +40,6 @@ void display();
 
 int plotWindowInit (int argc, char* argv[]);
 
-int plotWindowOpen(double param_a, double param_b, std::vector<Point> init_dots);
+int plotWindowOpen(double param_a, std::vector<Point> &init_dots, std::vector<Point>& init_dots_reversed);
 
 #endif // MAINPLOT_H

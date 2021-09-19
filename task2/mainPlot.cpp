@@ -1,20 +1,28 @@
 #include "mainPlot.h"
 using namespace std;
 
-double a, b;
+double a;
 //////////////////THIS FUNCTION IS USER-DEFINED///////////////////////
-Point mapping (Point o)
+Point mapping_straight(Point o)
 {
    Point image;
-   image.x  = o.x + o.y+ 0.4 *o.x* (1-o.x *o.x);
-   image.y = o.y+ 0.4*o.x*(1-o.x*o.x) ;
+   image.x  = o.x + o.y+ a *o.x* (1-o.x *o.x);
+   image.y = o.y+ a*o.x*(1-o.x*o.x) ;
+   return image;
+}
+Point mapping_reversed(Point o)
+{
+   Point image;
+   double  d= o.x - o.y;
+   image.x  = d;
+   image.y = o.y - a* d *(1-d*d);
    return image;
 }
 ////////////////////////////////////////////////////////////////////
 int n = 1;
 
 std::vector<Point> dots;
-std::vector<Point> dots_prev; /*we need this to make the down arrow feature work(optional)*/
+std::vector<Point> dots_reversed;
 
 void keyboard (unsigned char key,int x, int y)
 {
@@ -30,13 +38,6 @@ void skeyboard (int key,int x, int y)
         if (n > NUMBER_OF_STEPS) n = NUMBER_OF_STEPS;
         glutPostRedisplay();
     }
-    else if (key == GLUT_KEY_DOWN)
-    {
-        n = 1;
-        while(dots.size()>2)
-            dots.pop_back();
-        glutPostRedisplay();
-    }
 }
 
 double dist(Point dot1, Point dot2)
@@ -45,8 +46,8 @@ double dist(Point dot1, Point dot2)
     double dist_y = dot2.y - dot1.y;
     return sqrt(dist_x * dist_x + dist_y * dist_y);
 }
-//функция вызывается даже если мы не меняем итерацию.....................................................................................................
-void throw_new_points(Point dot1, Point dot2, std::vector<Point> &new_dots)
+
+void throw_new_points(Point dot1, Point dot2, std::vector<Point> &new_dots,Point (*mapping)(Point o))
 {
     Point middle_dot = {(dot1.x + dot2.x) / 2, (dot1.y + dot2.y) / 2};
 
@@ -55,8 +56,8 @@ void throw_new_points(Point dot1, Point dot2, std::vector<Point> &new_dots)
     double distance = dist(new_dot1, new_dot2);
     if (distance > DELTA)
     {
-        throw_new_points(dot1, middle_dot, new_dots);
-        throw_new_points(middle_dot, dot2, new_dots);
+        throw_new_points(dot1, middle_dot, new_dots, mapping);
+        throw_new_points(middle_dot, dot2, new_dots, mapping);
     }else
     {
         if (find(new_dots.begin(), new_dots.end(), new_dot1 ) != new_dots.end())
@@ -75,17 +76,20 @@ void approximation ()
 
   for (auto it =dots.begin();
            it+1 != dots.end(); ++it)
-
-           throw_new_points(it[0], it[1], new_dots);
+           throw_new_points(it[0], it[1], new_dots,&mapping_straight);
         dots = new_dots;
+        new_dots.clear();
+        for (auto it =dots_reversed.begin();
+                 it+1 != dots_reversed.end(); ++it)
+           throw_new_points(it[0], it[1], new_dots,&mapping_reversed);
+        dots_reversed = new_dots;
         new_dots.clear();
 }
 
 void draw_dots()
 {
-    glColor3f(0.,0.,1.);
     glBegin(GL_LINES);
-
+    glColor3f(0.,0.,1.);
         for (auto it =dots.begin();
                 it +1!= dots.end(); ++it)
         {
@@ -93,6 +97,15 @@ void draw_dots()
             glVertex2d(it->x, it->y);
             glVertex2d((it+1)->x, (it+1)->y);
         }
+    glColor3f(1.,0.,0.);
+    for (auto it =dots_reversed.begin();
+            it +1!= dots_reversed.end(); ++it)
+    {
+
+        glVertex2d(it->x, it->y);
+        glVertex2d((it+1)->x, (it+1)->y);
+    }
+
     glEnd();
 
 }
@@ -115,15 +128,6 @@ void display()
 
     draw_dots();
 
-/* draw axis */
-    glColor3f(1.0, 0.0, 0.0);
-    glBegin(GL_LINES);
-        glVertex2d(WIDTH, HEIGHT * 2);
-        glVertex2d(WIDTH, 0);
-        glVertex2d(WIDTH * 2, HEIGHT);
-        glVertex2d(0, HEIGHT);
-    glEnd();
-
     glFlush();
 }
 
@@ -138,12 +142,11 @@ int plotWindowInit (int argc, char* argv[])
     return 0;
 }
 
-int plotWindowOpen(double param_a, double param_b, vector<Point> init_dots)
+int plotWindowOpen(double param_a, vector<Point> &init_dots,vector<Point>& init_dots_reversed)
 {
     a = param_a;
-    b = param_b;
+    dots_reversed = init_dots_reversed;
     dots = init_dots;
-
     glutCreateWindow("Symbol");
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

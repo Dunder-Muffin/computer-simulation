@@ -50,38 +50,25 @@ p, li { white-space: pre-wrap; }
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Mapping&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="bParamEdit">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>130</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="plainText">
-     <string>0.3</string>
-    </property>
-   </widget>
    <widget class="QPlainTextEdit" name="aParamEdit">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>380</x>
       <y>130</y>
       <width>41</width>
       <height>41</height>
      </rect>
     </property>
     <property name="plainText">
-     <string>1.4</string>
+     <string>0.4</string>
     </property>
    </widget>
    <widget class="QTextBrowser" name="textBrowser_2">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>380</x>
       <y>90</y>
-      <width>81</width>
+      <width>41</width>
       <height>41</height>
      </rect>
     </property>
@@ -90,7 +77,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#a40000;&quot;&gt;  a&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;     &lt;/span&gt;&lt;span style=&quot; font-size:14pt; color:#4e9a06;&quot;&gt;b&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#a40000;&quot;&gt;  a&lt;/span&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
@@ -553,24 +540,11 @@ p, li { white-space: pre-wrap; }
      <string>Run</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>60</y>
-      <width>151</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Parameters&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
    <widget class="QPlainTextEdit" name="x1ParamEdit">
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>130</y>
+      <y>70</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -583,7 +557,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>90</y>
+      <y>30</y>
       <width>81</width>
       <height>41</height>
      </rect>
@@ -600,7 +574,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>480</x>
-      <y>130</y>
+      <y>70</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -613,25 +587,25 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>60</y>
+      <y>0</y>
       <width>161</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>18</pointsize>
+      <pointsize>16</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Initial section&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Straight&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QTextBrowser" name="textBrowser_4">
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>90</y>
+      <y>30</y>
       <width>81</width>
       <height>41</height>
      </rect>
@@ -648,7 +622,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>560</x>
-      <y>130</y>
+      <y>70</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -661,7 +635,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>130</y>
+      <y>70</y>
       <width>41</width>
       <height>41</height>
      </rect>
@@ -707,7 +681,111 @@ p, li { white-space: pre-wrap; }
 background-color: rgb(211, 215, 207);</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#729fcf;&quot;&gt;up arrow &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;- next iteration&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#e95757;&quot;&gt;down arrow&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt; - return to the initial&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;ESC - close &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#729fcf;&quot;&gt;up arrow &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;- next iteration&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; color:#000000;&quot;&gt;ESC - close &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="x1ParamEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>190</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="plainText">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="y2ParamEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>190</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="plainText">
+     <string>-0.23</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="y1ParamEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>190</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="plainText">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="x2ParamEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>190</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="plainText">
+     <string>0.5</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser_5">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>150</y>
+      <width>81</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;  x&lt;/span&gt;&lt;span style=&quot; font-size:14pt; color:#000000; vertical-align:sub;&quot;&gt;1 &lt;/span&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;    y&lt;/span&gt;&lt;span style=&quot; font-size:14pt; color:#000000; vertical-align:sub;&quot;&gt;1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser_6">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>150</y>
+      <width>81</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Noto Sans'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;  x&lt;/span&gt;&lt;span style=&quot; font-size:14pt; color:#000000; vertical-align:sub;&quot;&gt;2 &lt;/span&gt;&lt;span style=&quot; font-size:14pt; color:#000000;&quot;&gt;    y&lt;/span&gt;&lt;span style=&quot; font-size:14pt; color:#000000; vertical-align:sub;&quot;&gt;2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>120</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Reversed&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>

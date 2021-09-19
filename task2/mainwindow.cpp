@@ -19,7 +19,9 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     close(); /*close GUI*/
-    double param_a, param_b;
+    double param_a;
+    param_a = ui->aParamEdit->toPlainText().toDouble();
+
     std::vector<Point> init_dots{
         {
             ui->x1ParamEdit->toPlainText().toDouble(),
@@ -29,11 +31,19 @@ void MainWindow::on_pushButton_clicked()
             ui->x2ParamEdit->toPlainText().toDouble(),
             ui->y2ParamEdit->toPlainText().toDouble()
         }};
+    std::vector<Point> init_dots_reversed{
+        {
+            ui->x1ParamEdit_2->toPlainText().toDouble(),
+            ui->y1ParamEdit_2->toPlainText().toDouble()
+        },
+        {
+            ui->x2ParamEdit_2->toPlainText().toDouble(),
+            ui->y2ParamEdit_2->toPlainText().toDouble()
+        }};
 
-    param_a = ui->aParamEdit->toPlainText().toDouble();
-    param_b = ui->bParamEdit->toPlainText().toDouble();
 
-    plotWindowOpen(param_a, param_b, init_dots);
+
+    plotWindowOpen(param_a, init_dots, init_dots_reversed);
 
 }
 
