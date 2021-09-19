@@ -10,7 +10,6 @@ media: "Readme.md" pics and vids
 
 2. search for strongly connected components
 ![graph](./media/graph.png)
-
 ![graph_out](./media/graph_output.png)
 
 5. non-iterative way to build "localization of chain recurrent set", lacks performance
