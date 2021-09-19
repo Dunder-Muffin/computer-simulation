@@ -1,8 +1,8 @@
-#Direcrories:
+## Direcrories:
 
 media: "Readme.md" pics and vids
 
-#Programs:
+## Programs:
 
 1. simple henon mapping visualization
 	*f(x,y) = (1 - ax^2 + y,bx)*
@@ -13,6 +13,17 @@ media: "Readme.md" pics and vids
 ![graph_out](./media/graph_output.png)
 
 5. non-iterative way to build "localization of chain recurrent set", lacks performance
-(Henon was chose just for example)
+(Henon was chosen just for example)
 ![local](./media/local.png)
+
 Derived program from previous two.
+
+# Run
+`make $programNumber`
+
+`./run$programNumber.out`
+
+Example 
+	
+	make 1
+	./run1.out
