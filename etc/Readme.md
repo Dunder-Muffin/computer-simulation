@@ -22,7 +22,7 @@ Derived program from previous two.
 `make $programNumber`
 `./run$programNumber.out`
 
-	Example 
+Example 
 	
-`make 1`
-`./run1.out`
+	make 1
+	./run1.out
