@@ -18,11 +18,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    close(); /*close GUI*/
-    double param_a, param_b;
-    param_a = ui->aParamEdit->toPlainText().toDouble();
-    param_b = ui->bParamEdit->toPlainText().toDouble();
-    plotWindowOpen(param_a, param_b);
+
+    double param_alpha = ui->alphaParamEdit->toPlainText().toDouble(),
+            param_beta = ui->betaParamEdit->toPlainText().toDouble(),
+            param_gamma = ui->gammaParamEdit->toPlainText().toDouble();
+    Point starting_point =
+    {
+        ui->x0ParamEdit->toPlainText().toDouble(),
+        ui->y0ParamEdit->toPlainText().toDouble()
+    };
+    double dt = ui->dtParamEdit->toPlainText().toDouble();
+    double t0 = ui->t0ParamEdit->toPlainText().toDouble();
+
+    close();    /*close GUI*/
+    plotWindowOpen(param_alpha, param_beta, param_gamma, starting_point, t0, dt);
 
 }
 

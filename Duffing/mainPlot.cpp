@@ -3,11 +3,10 @@ using namespace std;
 
 
 int n = 1;
-double a, b;
 
 void keyboard (unsigned char key, int x, int y)
 {
-    if (key == '\033')
+    if (key == ESCAPE)
         exit(0);
 }
 
@@ -19,24 +18,71 @@ void skeyboard (int key, int x, int y)
         if (n > NUMBER_OF_STEPS) n = NUMBER_OF_STEPS;
         glutPostRedisplay();
     }
-    else if (key == GLUT_KEY_DOWN)
-    {
-        n--;
-        if (n < 1) n = 1;
-        glutPostRedisplay();
-    }
+//    else if (key == GLUT_KEY_DOWN)
+//    {
+//        n--;
+//        if (n < 1) n = 1;
+//        glutPostRedisplay();
+//    }
 }
 
+Point start;           /*   Major flaw of C-library glut/freeglut  is  */
+double t0;             /*   absence of argument line in display() function */
+double dt;             /*   so we are forced to use a lot of global variables to implement an idea */
 
-void mapping (double &xn, double &yn)
+double rk_alpha;        /*  TODO: glut is depreciated; rewrite with QGLWidget */
+double rk_beta;
+double rk_gamma;
+/////////////////////////////////////////////////////////userdeeifI'
+
+double f(double x, double y, double t)
 {
-    //const double a = 0.28;
-    //const double b = 0.0113;
-    double x = xn;
-    double y = yn;
+    return 0;//.5*cos(0.2 * t);
+}
+double dx (double x, double y, double t)
+{
+    return y;
+}
 
-    xn = (x * x) - (y * y) + a;
-    yn = 2 * x * y + b;
+double dy (double x, double y, double t)
+{
+    return -rk_alpha*y - rk_beta*x - rk_gamma * (x * x * x) + f(x,y,t);
+}
+
+void rk_dx (double &x, double y, double t)
+{
+    double k1 = dx(x, y, t);
+    double k2 = dx (x + dt/2 * k1, y, t + dt/2);
+    double k3 = dx (x + dt/2 * k2, y, t + dt/2);
+    double k4 = dx( x + dt * k3, y, t + dt);
+
+    x= x + dt/6 * (k1 + 2 * k2 + 2*k3 + k4);
+}
+void rk_dy (double x, double& y, double t)
+{
+    double k1 = dy(x, y, t);
+    double k2 = dy (x, y + dt/2 * k1, t + dt/2);
+    double k3 = dy (x, y + dt/2 * k2, t + dt/2);
+    double k4 = dy(x, y + dt * k3, t + dt);
+
+    y= y + dt/6 * (k1 + 2 * k2 + 2*k3 + k4);
+}
+
+void mapping (double &x, double &y)
+{
+
+    //glBegin(GL_LINES);
+    //glVertex2f(start.x, start.y);
+    //for (double tn = t0 + dt; tn <= NUMBER_OF_STEPS; tn += dt)
+    {
+        rk_dx(x, y, t0);
+        rk_dy(x, y, t0);
+      //  t0 += dt;
+
+       // glVertex2f(x, y);
+        //glEnd();
+    }
+
 }
 
 int return_cell (double x, double y, int cols,  double delta)
@@ -134,7 +180,7 @@ if (n==1)
     {
         double x1, y1, x, y;
         interval(i, x1, y1, cols, delta);
-
+//for (int k1 = 1; k1 <= K; k1++)
         for (int k = 1; k <= K; k++)
         {
             //for (int k1 = 1; k1 <= K; k1++)
@@ -262,6 +308,11 @@ void display()
     int scale, cols;
 
     gettimeofday(&t1, NULL);
+//                                    glBegin(GL_LINES);
+//                                        glColor3f(1.0, 0.0, 0.0);
+//                                        rungekutta();
+//                                    glEnd();
+//                                    glFlush();
         approximation(scale, cols);
     gettimeofday(&t2, NULL);
     for (vector<int> component : components)
@@ -274,8 +325,8 @@ void display()
 /*    we can use here cols*cols due to square grid*/
     cout<<"Iter= "<<n<<"\tNum cells="<< cols*cols<< "\tT="<< t<<endl;
 
-    if (n < 7)// otherwise screen goes black of that many grid lines
-    draw_grid(scale);
+   // if (n < 7)// otherwise screen goes black of that many grid lines
+    //draw_grid(scale);
 
     glColor3f(1.0, 0.0, 0.0);
     glBegin(GL_LINES);
@@ -299,17 +350,23 @@ int plotWindowInit (int argc, char* argv[])
     return 0;
 }
 
-int plotWindowOpen(double param_a, double param_b)
+int plotWindowOpen(double param_alpha, double param_beta, double param_gamma, Point starting_point, double param_t0, double param_dt)
 {
-    a = param_a;
-    b = param_b;
 
+    start = starting_point;
+    t0 = param_t0;
+    dt = param_dt;
+
+    rk_alpha = param_alpha;
+    rk_beta = param_beta;
+    rk_gamma = param_gamma;
     glutCreateWindow("Symbol");
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+//    glOrtho(-6, 6, -3, 3, -1.0, 1.0);
+
     glOrtho(-WIDTH, WIDTH, HEIGHT, -HEIGHT, -1.0, 1.0);
     glTranslatef(-WIDTH, -HEIGHT, 0);
-
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(skeyboard);

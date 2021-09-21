@@ -9,21 +9,27 @@
 #include <GL/glut.h>
 
 //TODO: make const int instead or even enum to all constants
-const int NUMBER_OF_STEPS = 25; /*maximum number of approximation steps*/
-const double   A =-2;   /*size of the grid*/
-const double  B =2;
-const double  C =-2;
-const double  D =2;
+const int NUMBER_OF_STEPS = 1000; /*maximum number of approximation steps*/
+const double   A =-10;   /*size of the grid*/
+const double  B =10;
+const double  C =-10;
+const double  D =10;
 const int WIDTH = 300*abs(A)*abs(B); /*bind size of the window to the size of the grid (optional)*/
 const int HEIGHT = 300*abs(D)*abs(C);
-#define K 100 //N*N defines number of points in one cell
+#define K 11 //N*N defines number of points in one cell
 
 #define CELLS 2 /*defindes split of each side of cells*/
 
-#define DELTA 0.25 //size of cell
+#define DELTA 2 //size of cell
 
+#define ESCAPE '\033'
 
-
+struct Point
+{
+    double x,y;
+bool operator==(const Point& rhs){ return this->x==rhs.x&&this->y==rhs.y; }
+//Point &operator=(const Point& rhs){ x=rhs.x; y=rhs.y; return *this; }
+};
 void keyboard (unsigned char key, int x, int y);
 
 
@@ -48,6 +54,6 @@ void display();
 
 int plotWindowInit (int argc, char* argv[]);
 
-int plotWindowOpen(double param_a, double param_b);
+int plotWindowOpen(double param_alpha, double param_beta, double param_gamma, Point starting_point, double t0, double param_dt);
 
 #endif // MAINPLOT_H
