@@ -16,7 +16,7 @@ void skeyboard (int key, int x, int y)
     if (key == GLUT_KEY_UP)
     {
         n++;
-        if (n > NUMBER_OF_STEPS) n = NUMBER_OF_STEPS;
+        //if (n > NUMBER_OF_STEPS) n = NUMBER_OF_STEPS;
         glutPostRedisplay();
     }
     else if (key == GLUT_KEY_DOWN)
@@ -32,11 +32,13 @@ void mapping (double &xn, double &yn)
 {
     //const double a = 0.28;
     //const double b = 0.0113;
+
     double x = xn;
     double y = yn;
+    double tau = 0.4 - 6/(1+x*x+y*y);
 
-    xn = (x * x) - (y * y) + a;
-    yn = 2 * x * y + b;
+    xn = 1.04 + (-0.9)*(x*cos(tau)-y*sin(tau)); //(x * x) - (y * y) + a;
+    yn = 1.2*(x*sin(tau)+y*cos(tau));
 }
 
 int return_cell (double x, double y, int cols,  double delta)
@@ -85,13 +87,21 @@ void dfs1 (int v, vector<vector<int>> &grid) {
             dfs1 (grid[v][i], grid);
     order.push_back (v);
 }
- 
-void dfs2 (int v, vector<vector<int> > &gr, vector<int> &component) {
-    used[v] = true;
-    component.push_back (v);
-    for (size_t i=0; i<gr[v].size(); ++i)
-        if (!used[ gr[v][i] ])
-            dfs2 (gr[v][i], gr, component);
+stack <int> task;
+ void dfs2 (int v, vector<vector<int> > &gr, vector<int> &component) {
+    task=stack<int>();
+    task.push(v);
+    while(!task.empty())
+    {
+        int i =task.top();
+        task.pop();
+
+        used[i] = true;
+        component.push_back (i);
+        for (size_t j=0; j<gr[i].size(); ++j)
+            if (!used[ gr[i][j] ])
+                task.push (gr[i][j]);
+    }
 }
 
 vector<vector<int> > components;
@@ -114,9 +124,6 @@ void find_components (vector <vector<int> > &grid, vector<vector<int> > &gr, int
             if ((int)component.size() > 1)
             {
                 components.push_back(component);
-               // for(int it:gr[v])
-                //if (find(vertices_to_iterate.begin(), vertices_to_iterate.end(), it) == vertices_to_iterate.end())
-                //    vertices_to_iterate.push_back(it);
             }
             component.clear();
         }
@@ -124,7 +131,7 @@ void find_components (vector <vector<int> > &grid, vector<vector<int> > &gr, int
 
     order.clear();
 }
-
+int counter=0;
 void make_graph(vector<vector<int> > &graph, vector<vector<int> >& i_graph, int number_of_cells, double delta)
 {
     int cols = (B - A) / delta;
@@ -162,11 +169,11 @@ if (n==1)
         }
     }else
     {
-
+    counter=0;
     for (vector<int> component : components)
         for (int i_old: component)
         {
-
+            counter++;
            vector<int >new_cells= get_new_cells_from_old (i_old,cols);
            for (int i : get_new_cells_from_old (i_old,cols))
            {
@@ -175,14 +182,14 @@ if (n==1)
                 interval(i, x1, y1, cols, delta);
 
                 for (int k = 1; k <= K; k++)
+               // for (int k1 = 1; k1 <= K; k1++)
                 {
-                    //for (int k1 = 1; k1 <= K; k1++)
 
                         /*spawning dots inside of every cell
                          using such rule to left no cells ucovered
                          lose minimum of information    */
-                        x = x1 + k * lambda*2 - k * lambda;
-                        y = y1 + k * lambda - k * lambda*3;
+                        x = x1 + k * lambda*3 - k * lambda;
+                        y = y1 + k * lambda - k * lambda*4;
 
                         mapping(x, y);
 
@@ -272,9 +279,10 @@ void display()
 
     double t = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec) / 1000000;
 /*    we can use here cols*cols due to square grid*/
-    cout<<"Iter= "<<n<<"\tNum cells="<< cols*cols<< "\tT="<< t<<endl;
+    cout<<"Iter= "<<n<<"\tNum cells=\
+"<< cols*cols<< "\tT="<< t<<"\tV= "<<counter<<endl;
 
-    if (n < 7)// otherwise screen goes black of that many grid lines
+    if (n < 6)// otherwise screen goes black of that many grid lines
     draw_grid(scale);
 
     glColor3f(1.0, 0.0, 0.0);
