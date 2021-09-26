@@ -20,7 +20,6 @@ struct Point
 {
     double x,y;
 bool operator==(const Point& rhs){ return this->x==rhs.x&&this->y==rhs.y; }
-Point operator-(){ this->x= -this->x; this->y=-this->y; return *this;}
 };
 
 double dist(Point dot1, Point dot2);

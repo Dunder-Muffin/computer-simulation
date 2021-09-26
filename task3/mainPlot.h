@@ -7,6 +7,8 @@
 #include <sys/time.h>
 #include <vector>
 #include <iostream>
+#include <sstream>
+#include <iterator>
 #include <GL/glut.h>
 
 //TODO: make const int instead or even enum to all constants
@@ -20,7 +22,6 @@ const int HEIGHT = 300*abs(D)*abs(C);
 #define K 11 //N*N defines number of points in one cell
 
 #define CELLS 2 /*defindes split of each side of cells*/
-
 #define DELTA 0.25 //size of cell
 
 
@@ -43,12 +44,7 @@ void make_graph(std::vector<std::vector<int> > &graph, std::vector<std::vector<i
 
 void approximation (int &scale, int &cols, std::vector<std::vector<int> >& components);
 
-void draw_grid(int scale);
 
-void display();
-
-int plotWindowInit (int argc, char* argv[]);
-
-int plotWindowOpen(double param_a, double param_b);
+std::string topologicalSort(double param_a, double param_b);
 
 #endif // MAINPLOT_H

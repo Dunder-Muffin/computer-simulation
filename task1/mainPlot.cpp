@@ -30,8 +30,6 @@ void skeyboard (int key, int x, int y)
 
 void mapping (double &xn, double &yn)
 {
-    //const double a = 0.28;
-    //const double b = 0.0113;
 
     double x = xn;
     double y = yn;
@@ -87,6 +85,8 @@ void dfs1 (int v, vector<vector<int>> &grid) {
             dfs1 (grid[v][i], grid);
     order.push_back (v);
 }
+/*dfs2 recursion was removed using stack emulation due to stack overflow on Relatively large number of iterations*/
+    /*TODO: remove dfs1 recursion*/
 stack <int> task;
  void dfs2 (int v, vector<vector<int> > &gr, vector<int> &component) {
     task=stack<int>();
