@@ -356,7 +356,7 @@ int plotWindowOpen(double param_alpha, double param_beta, double param_gamma, Po
 
     start = starting_point;
     t0 = param_t0;
-    dt = 2/W;//param_dt;
+    dt = 2*M_PI/fabs(W);//param_dt;
 
     rk_alpha = param_alpha;
     rk_beta = param_beta;
