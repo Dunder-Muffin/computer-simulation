@@ -75,58 +75,38 @@ vector <int> get_new_cells_from_old (int cell, int cols)
     new_cells.push_back(elem_0+cols+1);
     return new_cells;
 }
-std::vector<bool> used;
+std::vector<uint8_t> iused;
 std::vector<int> order;
 stack <int> task;
 
-void dfs1 (int v, vector<vector<int>> &grid)
-{
-    int uu;
-task=stack<int>();
-
+void dfs1 (int v, vector<vector<int>> &grid) {
+    task=stack<int>();
     task.push(v);
-     while(!task.empty()){
-        uu =task.top();
-         task.pop();
+    bool hasUnusedNeighbours;
+    int i ;//=task.top();
 
-        if (used[uu] != true){
-            used[uu]= true;
-            order.push_back(uu);//print(uu.data)
-            for (vector<int>::iterator vv =grid[uu].begin();vv!=grid[uu].end();vv++)
-                task.push(*vv);
+    while(!task.empty())
+    {
+        i =task.top();
+
+        hasUnusedNeighbours=false;
+        for (vector<int>::reverse_iterator j =grid[i].rbegin();j!=grid[i].rend();j++)
+            if (!iused[ *j ])
+            {
+                hasUnusedNeighbours=true;
+                task.push (*j);
+            }
+        if (!hasUnusedNeighbours)
+        {
+            task.pop();
+            if (iused[ i ]!=1)
+                order.push_back (i);
+           iused[i] = 1;
         }
-}}
-//void dfs1 (int v, vector<vector<int>> &grid) {
-//    task=stack<int>();
-//    task.push(v);
-
-//    while(!task.empty())
-//    {
-//        int i =task.top();
-//        task.pop();
-//        used[i] = true;
-//        // for (auto k =grid[29].begin();k<grid[29].end();k++)
-//            // cout<<*k<<endl;
-//         //for (vector<int>::iterator j =grid[i].begin();j!=grid[i].end();j++)
-//        for (size_t j=0; j<grid[i].size(); ++j)
-//            if (!used[grid[i][j] ])
-//                task.push (grid[i][j]);
-//        order.push_back (i);
-//    }
-//     //order.push_back (0);
-//}
-
-//void dfs1 (int v, vector<vector<int>> &grid) {
-
-//    used[v] = true;
-//    for (size_t i=0; i<grid[v].size(); ++i)
-//        if (!used[ grid[v][i] ])
-//            dfs1 (grid[v][i], grid);
-//    order.push_back (v);
-//}
-/*dfs2 recursion was removed using stack emulation due to stack overflow on Relatively large number of iterations*/
-    /*TODO: remove dfs1 recursion*/
-
+        else
+            iused[i] = 2;
+    }
+}
  void dfs2 (int v, vector<vector<int> > &gr, vector<int> &component) {
 
     task=stack<int>();
@@ -136,10 +116,10 @@ task=stack<int>();
         int i =task.top();
         task.pop();
 
-        used[i] = true;
+        iused[i] = true;
         component.push_back (i);
         for (vector<int>::iterator j =gr[i].begin();j!=gr[i].end();j++)
-            if (!used[ *j ])
+            if (!iused[ *j ])
                 task.push (*j);
     }
 }
@@ -149,16 +129,16 @@ void find_components (vector <vector<int> > &grid, vector<vector<int> > &gr, int
 {
     components.clear();
     vector<int> component;
-    used.resize(number_of_cells);
-    used.assign(number_of_cells, false);
+    iused.resize(number_of_cells);
+    iused.assign(number_of_cells, 0);
 
     for (int i = 0; i < number_of_cells; i++)
-        if (!used[i]) dfs1(i, grid);
-    used.assign(number_of_cells, false);
+        if (!iused[i]) dfs1(i, grid);
+    iused.assign(number_of_cells, 0);
     for (int i = 0; i < number_of_cells; i++)
     {
         int v = order[number_of_cells - 1 - i];
-        if (!used[v])
+        if (!iused[v])
         {
             dfs2(v, gr, component);
             if ((int)component.size() > 1)
