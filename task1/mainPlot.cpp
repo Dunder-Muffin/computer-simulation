@@ -79,15 +79,18 @@ std::vector<uint8_t> iused;
 std::vector<int> order;
 stack <int> task;
 
+/*stack emulation does not work exactly as recursion; ins and outs order differs;
+in general case deap understanding of recursion algorithm is required.
+Unlike classic DFS, the order of vertices sequence was important here, so the function looks weird without recursion*/
+
 void dfs1 (int v, vector<vector<int>> &grid) {
     task=stack<int>();
     task.push(v);
     bool hasUnusedNeighbours;
-    int i ;//=task.top();
 
     while(!task.empty())
     {
-        i =task.top();
+        int i =task.top();
 
         hasUnusedNeighbours=false;
         for (vector<int>::reverse_iterator j =grid[i].rbegin();j!=grid[i].rend();j++)
