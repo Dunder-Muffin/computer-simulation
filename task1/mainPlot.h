@@ -11,13 +11,13 @@
 
 //TODO: make const int instead or even enum to all constants
 const int NUMBER_OF_STEPS = 25; /*maximum number of approximation steps*/
-const double   A =-3;   /*size of the grid*/
-const double  B =4;
-const double  C =-3;
+const double   A =-3.5;   /*size of the grid*/
+const double  B =4.5;         /*A<=x<=B; C<=y<=D*/
+const double  C =-3.5;
 const double  D =4;
 const int WIDTH = 300*abs(A)*abs(B); /*bind size of the window to the size of the grid (optional)*/
 const int HEIGHT = 300*abs(D)*abs(C);
-#define K 11 //N*N defines number of points in one cell
+#define K 10 //N*N defines number of points in one cell
 
 #define CELLS 2 /*defindes split of each side of cells*/
 

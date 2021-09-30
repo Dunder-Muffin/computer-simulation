@@ -54,17 +54,142 @@ vector <int> get_new_cells_from_old (int cell, int cols)
     new_cells.push_back(elem_0+cols+1);
     return new_cells;
 }
-std::vector<bool> used;
+std::vector<int> used;
 std::vector<int> order;
+stack <int> task;
+//void dfs1 (int v, vector<vector<int>> &grid) {
+//    task=stack<int>();
+//    task.push(v);
 
+//    while(!task.empty())
+//    {
+//        int i =task.top();
+//        task.pop();
+
+//        // for (auto k =grid[29].begin();k<grid[29].end();k++)
+//            // cout<<*k<<endl;
+//         //for (vector<int>::iterator j =grid[i].begin();j!=grid[i].end();j++)
+//        for (size_t j=0; j<grid[i].size(); ++j)
+//            if (!used[grid[i][j] ]){
+//                task.push (grid[i][j]);
+//        used[grid[i][j] ] = true;
+//        order.push_back (grid[i][j] );
+//            }
+//        if (!used[i])
+//        {
+//        used[i] = true;
+//        order.push_back (i);
+//        }
+//    }
+//     order.push_back (0);
+//}
+stack <int> forgotten;
+//void dfs1 (int v, vector<vector<int>> &grid)
+//{
+//    int uu;
+//task=stack<int>();
+//std::vector<uint> childsVisited(100000);
+//void dfs1(int s,vector<vector<int>> &g)
+//{
+//   // used= vector<int>();
+//    stack<int> stk;
+//    stk.push(s);
+//    used[s] = 1;
+
+//    int jumpOut, count;
+
+//    int counter = 0;
+//    while(!stk.empty())
+//    {
+//        jumpOut = 0;
+//        int cur = stk.top();
+//        for ( ;childsVisited[cur] < g[cur].size(); ++childsVisited[cur] )
+//        {
+//            int i = childsVisited[cur];
+//            int next = g[cur][i];
+//            if(used[next] != 1)
+//            {
+//                stk.push(next);
+//                used[next] = 1;
+
+//                jumpOut = 1; //Jump to the while loop's beginning
+//                break;
+//            }
+//        }
+
+//        if(jumpOut == 0)
+//            order.push_back(stk.top());
+//            stk.pop();
+//    }
+//}
+//    task.push(v);
+//     while(!task.empty()){
+//        uu =task.top();
+//         task.pop();
+
+//        if (used[uu] != true){
+//            used[uu]= true;
+//            order.push_back(uu);//print(uu.data)
+//            for (vector<int>::iterator vv =grid[uu].begin();vv!=grid[uu].end();vv++)
+//                task.push(*vv);
+//        }
+//}order.push_back (0);}
 void dfs1 (int v, vector<vector<int>> &grid) {
-    used[v] = true;
-    for (size_t i=0; i<grid[v].size(); ++i)
-        if (!used[ grid[v][i] ])
-            dfs1 (grid[v][i], grid);
-    order.push_back (v);
-}
+    task=stack<int>();
+    task.push(v);
+    bool hasUnusedNeighbours;
+    int i ;//=task.top();
 
+    while(!task.empty())
+    {
+        i =task.top();
+       //used[i] = true;
+        // for (auto k =grid[29].begin();k<grid[29].end();k++)
+            // cout<<*k<<endl;
+         //for (vector<int>::reverse_iterator j =grid[i].rbegin();j!=grid[i].rend();j++)
+        hasUnusedNeighbours=false;
+        for (size_t j=grid[i].size()-1; j<=0; --j)
+            if (!used[ grid[i][j] ]){
+                hasUnusedNeighbours=true;
+                task.push (grid[i][j]);
+                //used[grid[i][j]] = true;
+            }
+        if (!hasUnusedNeighbours)
+        {
+            used[i] = true;
+            task.pop();
+            order.push_back (i);
+
+//            order.push_back (i);
+//            if (!forgotten.empty()&&нет братьев)
+//            {
+//                i=forgotten.top();
+//                forgotten.pop();
+//            }
+//            else
+//            {
+//                i =task.top();
+//                task.pop();
+//            }
+        }
+        else
+        {
+
+//         forgotten.push(i);
+//         i =task.top();
+//         task.pop();
+//        }
+    }
+//  }   //order.push_back (0);
+}}
+//void dfs1 (int v, vector<vector<int>> &grid) {
+
+//    used[v] = true;
+//    for (size_t i=0; i<grid[v].size(); ++i)
+//        if (!used[ grid[v][i] ])
+//            dfs1 (grid[v][i], grid);
+//    order.push_back (v);
+//}
 int counter=0;
 void make_graph(vector<vector<int> > &graph, int number_of_cells, double delta)
 {

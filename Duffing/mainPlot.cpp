@@ -34,10 +34,10 @@ double rk_alpha;        /*  TODO: glut is depreciated; rewrite with QGLWidget */
 double rk_beta;
 double rk_gamma;
 /////////////////////////////////////////////////////////userdeeifI'
-
+const double W = 0.6;
 double f(double x, double y, double t)
 {
-    return 0;//.5*cos(0.2 * t);
+    return 0.5*cos(W * t);
 }
 double dx (double x, double y, double t)
 {
@@ -49,23 +49,23 @@ double dy (double x, double y, double t)
     return -rk_alpha*y - rk_beta*x - rk_gamma * (x * x * x) + f(x,y,t);
 }
 
-void rk_dx (double &x, double y, double t)
+float rk_dx (double x, double y, double t)
 {
     double k1 = dx(x, y, t);
     double k2 = dx (x + dt/2 * k1, y, t + dt/2);
     double k3 = dx (x + dt/2 * k2, y, t + dt/2);
     double k4 = dx( x + dt * k3, y, t + dt);
 
-    x= x + dt/6 * (k1 + 2 * k2 + 2*k3 + k4);
+    return x + dt/6 * (k1 + 2 * k2 + 2*k3 + k4);
 }
-void rk_dy (double x, double& y, double t)
+float rk_dy (double x, double y, double t)
 {
     double k1 = dy(x, y, t);
     double k2 = dy (x, y + dt/2 * k1, t + dt/2);
     double k3 = dy (x, y + dt/2 * k2, t + dt/2);
     double k4 = dy(x, y + dt * k3, t + dt);
 
-    y= y + dt/6 * (k1 + 2 * k2 + 2*k3 + k4);
+    return y + dt/6 * (k1 + 2 * k2 + 2*k3 + k4);
 }
 
 void mapping (double &x, double &y)
@@ -73,14 +73,15 @@ void mapping (double &x, double &y)
 
     //glBegin(GL_LINES);
     //glVertex2f(start.x, start.y);
-    //for (double tn = t0 + dt; tn <= NUMBER_OF_STEPS; tn += dt)
-    {
-        rk_dx(x, y, t0);
-        rk_dy(x, y, t0);
+    //for (double tn = t0; tn <= NUMBER_OF_STEPS; tn += dt)
+    {//cout<<x<<"\t"<<y<<endl;
+        x=rk_dx(x, y, t0);
+        y=rk_dy(x, y, t0);
       //  t0 += dt;
-
+        //cout<<x<<"\t"<<y<<endl;
        // glVertex2f(x, y);
         //glEnd();
+
     }
 
 }
@@ -355,7 +356,7 @@ int plotWindowOpen(double param_alpha, double param_beta, double param_gamma, Po
 
     start = starting_point;
     t0 = param_t0;
-    dt = param_dt;
+    dt = 2/W;//param_dt;
 
     rk_alpha = param_alpha;
     rk_beta = param_beta;
