@@ -2,18 +2,20 @@
 #define MAINPLOT_H
 
 #include <algorithm>
+#include <cstdlib>
 #include <cmath>
 #include <stack>
 #include <sys/time.h>
 #include <vector>
 #include <iostream>
 #include <GL/glut.h>
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 
 //TODO: make const int instead or even enum to all constants
 const int NUMBER_OF_STEPS = 25; /*maximum number of approximation steps*/
-const double   A =-3.5;   /*size of the grid*/
-const double  B =4.5;         /*A<=x<=B; C<=y<=D*/
-const double  C =-3.5;
+const double   A =-4;   /*size of the grid*/
+const double  B =4;         /*A<=x<=B; C<=y<=D*/
+const double  C =-4;
 const double  D =4;
 const int WIDTH = 300*abs(A)*abs(B); /*bind size of the window to the size of the grid (optional)*/
 const int HEIGHT = 300*abs(D)*abs(C);
@@ -23,7 +25,13 @@ const int HEIGHT = 300*abs(D)*abs(C);
 
 #define DELTA 0.25 //size of cell
 
-
+struct Pixel{
+    uint8_t  r;
+    uint8_t  g;
+    uint8_t  b;
+public:
+    Pixel();
+};
 
 void keyboard (unsigned char key, int x, int y);
 

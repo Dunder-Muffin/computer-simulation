@@ -1,4 +1,5 @@
 #include "mainPlot.h"
+#include "stb_image_write.h"
 using namespace std;
 
 
@@ -35,13 +36,20 @@ void mapping (double &xn, double &yn)
     double y = yn;
     double tau = 0.4 - 6/(1+x*x+y*y);
 
-    xn = 1.04 + (-0.9)*(x*cos(tau)-y*sin(tau)); //(x * x) - (y * y) + a;
-    yn = 1.2*(x*sin(tau)+y*cos(tau));
+    xn =    1 + (-0.9)*(x*cos(tau)-y*sin(tau));
+            //x-y;//  //(x * x) - (y * y) + a;
+    yn =    1.2*(x*sin(tau)+y*cos(tau));
+            //x+y;//
+//    double norm = sqrt(xn*xn +yn*yn);
+//    if (norm)
+//    {
+//            xn = xn/norm;
+//            yn = yn/norm;
+//    }
 }
-
 int return_cell (double x, double y, int cols,  double delta)
 {
-    return (int)abs((double)(y - D)/delta) * cols + (int)abs((double)(x - A)/delta);
+    return (int)fabs((double)(y - D)/delta) * cols + (int)abs((double)(x - A)/delta);
 }
 
 void interval (int cell, double& x1, double& y1, int cols, double delta)
@@ -110,8 +118,9 @@ void dfs1 (int v, vector<vector<int>> &grid) {
             iused[i] = 2;
     }
 }
- void dfs2 (int v, vector<vector<int> > &gr, vector<int> &component) {
 
+ void dfs2 (int v, vector<vector<int> > &gr,
+                   vector<int> &component, bool &selfLoop) {
     task=stack<int>();
     task.push(v);
     while(!task.empty())
@@ -124,6 +133,8 @@ void dfs1 (int v, vector<vector<int>> &grid) {
         for (vector<int>::iterator j =gr[i].begin();j!=gr[i].end();j++)
             if (!iused[ *j ])
                 task.push (*j);
+            else if (*j==i)
+                selfLoop=true;
     }
 }
 
@@ -134,6 +145,7 @@ void find_components (vector <vector<int> > &grid, vector<vector<int> > &gr, int
     vector<int> component;
     iused.resize(number_of_cells);
     iused.assign(number_of_cells, 0);
+    bool selfLoop=false;
 
     for (int i = 0; i < number_of_cells; i++)
         if (!iused[i]) dfs1(i, grid);
@@ -143,10 +155,11 @@ void find_components (vector <vector<int> > &grid, vector<vector<int> > &gr, int
         int v = order[number_of_cells - 1 - i];
         if (!iused[v])
         {
-            dfs2(v, gr, component);
-            if ((int)component.size() > 1)
+            dfs2(v, gr, component,selfLoop);
+            if ((int)component.size() > 1 || selfLoop)
             {
                 components.push_back(component);
+                selfLoop=false;
             }
             component.clear();
         }
@@ -164,7 +177,6 @@ if (n==1)
     {
         double x1, y1, x, y;
         interval(i, x1, y1, cols, delta);
-
         for (int k = 1; k <= K; k++)
             for (int k1 = 1; k1 <= K; k1++)
         {
@@ -176,7 +188,7 @@ if (n==1)
                 x = x1 + k1 * lambda;
                 y = y1 - k * lambda;
 
-                 mapping(x, y);
+                mapping(x, y);
 
                 if (x <= A || x >= B || y <= C || y >= D)
                     continue;
@@ -185,7 +197,6 @@ if (n==1)
 
                 if (find(graph[i].begin(), graph[i].end(), cell) == graph[i].end())
                 {
-
                     graph[i].push_back(cell);
                     i_graph[cell].push_back(i);
 
@@ -230,9 +241,11 @@ if (n==1)
                         }
                 }
         }
-    }}
+    }
+   }
 }
-
+int number_of_cells;
+Pixel::Pixel(){r=0;g=0;b=0;}
 void approximation (int &scale, int &cols)
 {
     double delta = DELTA;
@@ -242,7 +255,7 @@ void approximation (int &scale, int &cols)
 
     int rows = (D - C) / delta;
     cols = (B - A) / delta;
-    int number_of_cells = rows * cols;
+    number_of_cells = rows * cols;
 
     scale = WIDTH* 2 / cols;
     vector <vector <int> > graph (number_of_cells);
@@ -254,7 +267,6 @@ void approximation (int &scale, int &cols)
 
 void draw_square (int cell, int scale,int cols)
 {
-    glColor3f(0.,0.,1.);
     int row = cell / cols;
     int col = cell % cols;
     glRectf(col * scale, row * scale, (col + 1) * scale, (row + 1) * scale);
@@ -279,7 +291,7 @@ void draw_grid(int scale)
 
     glEnd();
 }
-
+Pixel *pixel=nullptr;
 void display()
 {
     glClearColor(1.0, 1.0, 1.0, 1.0);
@@ -289,20 +301,31 @@ void display()
 
     struct timeval t1, t2;
 
-
     int scale, cols;
 
     gettimeofday(&t1, NULL);
         approximation(scale, cols);
     gettimeofday(&t2, NULL);
+    int i =0;
+
+    pixel=(Pixel *)realloc(pixel,number_of_cells*sizeof(Pixel));
     for (vector<int> component : components)
+    {
+        i++;/*assign each component to different colors*/
+        glColor3f((sin(i*100)+1)/2,(sin(i*100)+1)/2,0.);
         for (int v: component)
         {
             draw_square(v, scale, cols);
+            pixel[v].r=254;
         }
-
+    }
+    //uint8_t *a=(uint8_t *)calloc(6,sizeof(uint8_t));
+          // ={1,2,3,4,5,6,7,8};//7,8,9,1,2,3,4,5,6,7,6,7};
+    if(stbi_write_png("image.png",cols, number_of_cells/cols , 3, pixel, cols * 3)==0)
+        exit(3);
     double t = (t2.tv_sec - t1.tv_sec) + (double)(t2.tv_usec - t1.tv_usec) / 1000000;
-/*    we can use here cols*cols due to square grid*/
+
+    /*  cols*cols here is rough approximation as square grid*/
     cout<<"Iter= "<<n<<"\tNum cells=\
 "<< cols*cols<< "\tT="<< t<<"\tV= "<<counter<<endl;
 
